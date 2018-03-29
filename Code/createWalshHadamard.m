@@ -1,6 +1,10 @@
-function H = createWalshHadamard(d)
+function H = createWalshHadamard(d,x)
 % H (dxd) is a Walsh-Hadamard fourier matrix
-
-H = (1/sqrt(d))*hadamard(d);
-
+if x == 0 
+    % without normalisation
+    H = hadamard(d);
+else
+    % with normalisation
+    H = (1/sqrt(d))*hadamard(d);
+end
 end

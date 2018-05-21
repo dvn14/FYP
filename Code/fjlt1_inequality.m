@@ -1,6 +1,5 @@
+function [prob, O, Average_ct, Max_ct, Phi, NZ] = fjlt1_inequality(n,k,d,e,A)
 %n = 10; k = 32; d = 64; e = 0.4; A = rand(d,n);
-function [prob, ct, O, Average_ct] = fjlt1_inequality(n,k,d,e,A)
-
 tmp = zeros([4,n]);
 tic;
 [Phi,NZ] = createFJLT1projectionMatrix(k,d,n,e);
@@ -24,5 +23,5 @@ end
 prob = sum(tmp(4,:))/n;
 O = d*log(d)+NZ;
 Average_ct = mean(ct);
-
+Max_ct = max(ct);
 end

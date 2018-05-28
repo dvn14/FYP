@@ -33,7 +33,7 @@ end
 
 e = 0.02:0.02:1;
 
-dir = 'results/';
+dir = 'results/fjlt1';
 timestamp = datestr(now, 'dd-mm-yy_HH-MM-SS-FFF');
 
     figure()

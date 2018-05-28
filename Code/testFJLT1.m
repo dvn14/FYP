@@ -1,7 +1,7 @@
 clear;
-n = 500; d = 512; 
+n = 50; d = 64; 
 A = rand(d,n);
-k = [2,4,8,16,32,64,128,256];
+k = [2,3,4,8,16,32];
 k_dim = length(k);
 prob = zeros(k_dim,50); averageCompTime = zeros(k_dim,50); maxCompTime = zeros(k_dim,50);
 probTwoThirdsAt = zeros(1,k_dim) -1;

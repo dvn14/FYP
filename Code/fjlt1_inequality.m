@@ -1,10 +1,10 @@
 function [prob, O, Average_ct, Max_ct, Phi, NZ] = fjlt1_inequality(n,k,d,e,A)
 %n = 10; k = 32; d = 64; e = 0.4; A = rand(d,n);
 tmp = zeros([4,n]);
-tic;
+%tic;
 [Phi,NZ] = createFJLT1projectionMatrix(k,d,n,e);
-t = toc;
-ct = zeros(1,n) + t;
+%t = toc;
+ct = zeros(1,n);
 for i = 1:n
     x = A(:,i);
     tic;

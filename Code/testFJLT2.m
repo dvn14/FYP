@@ -1,9 +1,9 @@
 clear;
 n = 50; d = 64; %beta and e 
 A = normc(rand(d,n));
-k = 2:8;
+k = [2,4,5,8,16,32];
 k_dim = length(k);
-beta = 16;
+beta = 32;
 beta_dim = length(beta);
 
 probs = zeros(k_dim,50); averageCompTime = zeros(k_dim,50); maxCompTime = zeros(k_dim,50);
@@ -44,14 +44,14 @@ end
 
 e = 0.01:0.01:0.5;
 
-%dir = 'results/fjlt2';
-%timestamp = datestr(now, 'dd-mm-yy_HH-MM-SS-FFF');
+dir = 'results/fjlt2/';
+timestamp = datestr(now, 'dd-mm-yy_HH-MM-SS-FFF');
 
     figure()
     hold on
     xlabel('Error')
     ylabel('Probability of JLP')
-    title(['Plot when n = ', num2str(n), ', d = ', num2str(d)])
+    title(['Plot when n = ', num2str(n), ', d = ', num2str(d), ', beta = ', num2str(beta)])
     names = cell(1,k_dim);
 for i = 1:k_dim
     plot(e,probs(i,:), 'Markersize', 8);
@@ -60,13 +60,13 @@ end
 
     legend(names,'Location','northwest')
     hold off
- %   saveas(gca, strcat(dir, timestamp, ['_k','.png'])) 
+    saveas(gca, strcat(dir, timestamp, ['_k','.png'])) 
 
     figure()
     hold on
     yyaxis left
     plot(k,highestProbAt, 'b-', 'Markersize', 8);
-    title(['Plot when n = ', num2str(n), ', d = ', num2str(d)])
+    title(['Plot when n = ', num2str(n), ', d = ', num2str(d), ', beta = ', num2str(beta)])
     xlabel('Embedded Dimension (k)')
     ylabel('Highest Probability at Error')
 
@@ -76,19 +76,20 @@ end
 
     legend({'Error','Average Computation Time'},'Location','northwest')
     hold off
-  %  saveas(gca, strcat(dir, timestamp, ['_k_all','.png']))
+    saveas(gca, strcat(dir, timestamp, ['_k_all','.png']))
 
 
 
 % [prob, compTime, bigO, averageCompTime, projMatrix, nonZeros] = fjlt1_inequality(n,k,d,e,A);
 
-% fileID = fopen(strcat(dir, 'resultslog.txt'),'a');
-% fprintf(fileID, '%21s | ', timestamp);
-% fprintf(fileID, '%6d | ', n);
-% fprintf(fileID, '%6d | ', d);
-% fprintf(fileID, strcat(repmat('%10d ', 1, length(k)), ' | '), k);
-% fprintf(fileID, strcat(repmat('%10.3f ', 1, length(probTwoThirdsAt)), ' | '), probTwoThirdsAt);
-% fprintf(fileID, '\n');
-% fclose(fileID);
+ fileID = fopen(strcat(dir, 'resultslog.txt'),'a');
+ fprintf(fileID, '%21s | ', timestamp);
+ fprintf(fileID, '%6d | ', n);
+ fprintf(fileID, '%6d | ', d);
+ fprintf(fileID, '%6d | ', beta);
+ fprintf(fileID, strcat(repmat('%10d ', 1, length(k)), ' | '), k);
+ fprintf(fileID, strcat(repmat('%10.3f ', 1, length(highestProbAt)), ' | '), highestProbAt);
+ fprintf(fileID, '\n');
+ fclose(fileID);
 
 % plot average probability vs error for a given d,n,k

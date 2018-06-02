@@ -1,6 +1,6 @@
 clear;
 n = 5000;
-m = 10000;
+m = 5000;
 
 X = randn(n,m);
 
@@ -13,7 +13,7 @@ dir = 'results/other/';
 timestamp = datestr(now, 'dd-mm-yy_HH-MM-SS-FFF');
 figure();
 hold on
-    histogram(all_Eigenvalues,[0 min(all_Eigenvalues):0.05:max(all_Eigenvalues)+0.05 3.5]);
+    histogram(all_Eigenvalues,[0 min(all_Eigenvalues):0.05:max(all_Eigenvalues)+0.05 4.5]);
     title(['Eigenvalues of $$\hat{\sum}$$ for n = ', num2str(n), ', m = ', num2str(m)],'interpreter','latex')
     xlabel('Eigenvalue')
     hold off

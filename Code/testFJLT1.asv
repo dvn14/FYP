@@ -1,5 +1,5 @@
-function testFJLT1(d)
-n = 500; %d = 128; 
+function testFJLT1(n,d)
+%n = 50; d = 128; 
 A = rand(d,n);
 k = [2,3,4,8,16,32];
 k_dim = length(k);

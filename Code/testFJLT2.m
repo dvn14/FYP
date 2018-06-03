@@ -1,6 +1,6 @@
 clear;
 n = 50; d = 64; %beta and e 
-A = normc(rand(d,n));
+A = rand(d,n);
 k = [2,4,5,8,16,32];
 k_dim = length(k);
 beta = 32;
@@ -54,7 +54,7 @@ timestamp = datestr(now, 'dd-mm-yy_HH-MM-SS-FFF');
     title(['Plot when n = ', num2str(n), ', d = ', num2str(d), ', beta = ', num2str(beta)])
     names = cell(1,k_dim);
 for i = 1:k_dim
-    plot(e,probs(i,:), 'Markersize', 8);
+    plot(e,smoothdata(probs(i,:)), 'Markersize', 8);
     names{i} = strcat(['k = ',num2str(k(i))]);
 end
 
@@ -65,13 +65,13 @@ end
     figure()
     hold on
     yyaxis left
-    plot(k,highestProbAt, 'b-', 'Markersize', 8);
+    plot(k,smoothdata(highestProbAt), 'b-', 'Markersize', 8);
     title(['Plot when n = ', num2str(n), ', d = ', num2str(d), ', beta = ', num2str(beta)])
     xlabel('Embedded Dimension (k)')
     ylabel('Highest Probability at Error')
 
     yyaxis right
-    plot(k,aCTperK, 'r-', 'Markersize', 8);
+    plot(k,smoothdata(aCTperK), 'r-', 'Markersize', 8);
     ylabel('Average Computation Time (Sec)')
 
     legend({'Error','Average Computation Time'},'Location','northwest')

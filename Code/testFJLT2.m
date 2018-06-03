@@ -1,9 +1,10 @@
-clear;
-n = 50; d = 64; %beta and e 
-A = rand(d,n);
-k = [2,4,5,8,16,32];
+function testFJLT2(n,d,beta)
+%clear;
+%n = 50; d = 64; %beta and e 
+A = normc(rand(d,n));
+k = [2,3,4,5,8,16];
 k_dim = length(k);
-beta = 32;
+%beta = [4,16,16,24];
 beta_dim = length(beta);
 
 probs = zeros(k_dim,50); averageCompTime = zeros(k_dim,50); maxCompTime = zeros(k_dim,50);
@@ -17,27 +18,25 @@ for i = 1:k_dim
         c = 0;
         prob_1 = 0; act = 0; mct = 0;
         while 1
-            [Phi,prob,Average_ct,Max_ct] = fjlt2_prep(n,k(i),d,beta,A,e/100);
-            if prob == 1
-                averageCompTime(i,e) = Average_ct;
-                maxCompTime(i,e) = Max_ct;
-                probs(i,e) = 1;
-                prob_1 = 1;
-                break
-            elseif c == 50
-                averageCompTime(i,e) = act;
-                maxCompTime(i,e) = mct;
-                probs(i,e) = prob_1;
-                break
-            elseif prob > prob_1 
-                prob_1 = prob; act = Average_ct; mct = Max_ct;
+            [Phi,prob_2,Average_ct,Max_ct] = fjlt2_prep(n,k(i),d,beta,A,e/100);
+            %prob_1 = prob_1 + prob_2;
+            act = act + Average_ct;
+            mct = mct + Max_ct;
+            if prob_2 > prob_1
+                prob_1 = prob_2;
+            end
+            if prob_2 > highestprob
+                highestprob = prob_2;
+                highestProbAt(i) = e/100;
+            end
+            if c == 50
+                break;
             end
             c = c+1;
         end
-        if prob_1 > highestprob
-            highestProbAt(i) = e/100;
-            highestprob = prob_1;
-        end
+        probs(i,e) = prob_1;
+        averageCompTime(i,e) = act;
+        maxCompTime(i,e) = mct;
     end
     aCTperK(i) = mean(averageCompTime(i,:));
 end
@@ -93,3 +92,4 @@ end
  fclose(fileID);
 
 % plot average probability vs error for a given d,n,k
+end

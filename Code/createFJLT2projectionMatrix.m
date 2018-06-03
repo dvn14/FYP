@@ -11,6 +11,10 @@ HD_dd = H_beta*D_beta;
 
 BDHD  = BD_kd*HD_dd;
 P = repmat(BDHD,1,x);
+% H = 2^(-d/2)*hadamard(d);
+% i = randperm(d,k);
+% A = sqrt(d/k)*H(i,:);
+% P = normc(A);
 
 end
 

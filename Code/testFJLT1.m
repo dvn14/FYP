@@ -1,7 +1,7 @@
 function testFJLT1(d)
-n = 500; %d = 128; 
+n = 10000; %d = 128; 
 A = rand(d,n);
-k = [2,3,4,8,16,32];
+k = [2,3,4,8,16,25,32];
 k_dim = length(k);
 prob = zeros(k_dim,50); averageCompTime = zeros(k_dim,50); maxCompTime = zeros(k_dim,50);
 probTwoThirdsAt = zeros(1,k_dim) -1;

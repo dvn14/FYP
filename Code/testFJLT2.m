@@ -1,8 +1,8 @@
-function testFJLT2(n,d,beta)
+function testFJLT2(n,d,k,beta)
 %clear;
 %n = 50; d = 64; %beta and e 
 A = normc(rand(d,n));
-k = [2,3,4,5,8,16];
+%k = [2,3,4,5,8,16];
 k_dim = length(k);
 %beta = [4,16,16,24];
 beta_dim = length(beta);
@@ -18,7 +18,7 @@ for i = 1:k_dim
         c = 0;
         prob_1 = 0; act = 0; mct = 0;
         while 1
-            [Phi,prob_2,Average_ct,Max_ct] = fjlt2_prep(n,k(i),d,beta,A,e/100);
+            [Phi,prob_2,Average_ct,Max_ct] = fjlt2_prep(n,k(i),d,beta(i),A,e/100);
             %prob_1 = prob_1 + prob_2;
             act = act + Average_ct;
             mct = mct + Max_ct;

@@ -1,6 +1,9 @@
 clear;
 load fisheriris;
 measT=meas';
+n = 150;
+d=32;
+error = 0.45;
 X = zeros(32,150);
 
 for i=1:4
@@ -9,104 +12,83 @@ for i=1:4
     X(i,:) = (meas(:,i)' - x_min)/(x_max - x_min);
 end
 
-oriX = X; oriSpecies = species;
-testpoints = 5;
-testSetidx = randperm(150,testpoints);
-testSet = X(:,testSetidx);      %%% Test set for knn
-X(:,testSetidx) = [];
-sampleset = X;                  %%% Sample set for knn
-X = horzcat(X,testSet);
-target = species(testSetidx);   %%% Targets for knn
-species(testSetidx) = [];
-species = vertcat(species, repmat(cellstr('query point'),testpoints,1));
-
 [prob_2, O_2, Average_ct_2, Max_ct_2, Phi_2, NZ_2] = fjlt1_inequality(150,2,32,0.45,X);
 [prob_3, O_3, Average_ct_3, Max_ct_3, Phi_3, NZ_3] = fjlt1_inequality(150,3,32,0.45,X);
-
-tpX2 = Phi_2*X;
-tpX3 = Phi_3*X;
-pX2 = zeros(2,150);
-pX3 = zeros(3,150);
-
-for i=1:2
-    x_min = min(tpX2(i,:));
-    x_max = max(tpX2(i,:));
-    pX2(i,:) = (tpX2(i,:) - x_min)/(x_max - x_min);
-end
-
-for i=1:3
-    x_min = min(tpX3(i,:));
-    x_max = max(tpX3(i,:));
-    pX3(i,:) = (tpX3(i,:) - x_min)/(x_max - x_min);
-end
-
 [Phi_4,prob_4,Average_ct_4,Max_ct_4] = fjlt2_prep(150,4,32,16,X,0.45);
 [Phi_5,prob_5,Average_ct_5,Max_ct_5] = fjlt2_prep(150,5,32,16,X,0.45);
 
-tpX4 = Phi_4*X;
-tpX5 = Phi_5*X;
-pX4 = zeros(4,150);
-pX5 = zeros(5,150);
+pX2 = norm_matrix(X,Phi_2,2,150);
+pX3 = norm_matrix(X,Phi_3,3,150);
+pX4 = norm_matrix(X,Phi_4,4,150);
+pX5 = norm_matrix(X,Phi_5,5,150);
 
-for i=1:4
-    x_min = min(tpX4(i,:));
-    x_max = max(tpX4(i,:));
-    pX4(i,:) = (tpX4(i,:) - x_min)/(x_max - x_min);
-end
+TestPoints = 5;
+TestIdx = randperm(150,TestPoints);
 
-for i=1:5
-    x_min = min(tpX5(i,:));
-    x_max = max(tpX5(i,:));
-    pX5(i,:) = (tpX5(i,:) - x_min)/(x_max - x_min);
-end
+[TestDataSet_X,TestTarget_X,SampleDataSet_X,SampleTarget_X,Plot_X] = seperate_data(TestIdx,X,species);
+[TestDataSet_pX2,TestTarget_pX2,SampleDataSet_pX2,SampleTarget_pX2,Plot_pX2] = seperate_data(TestIdx,pX2,species);
+[TestDataSet_pX3,TestTarget_pX3,SampleDataSet_pX3,SampleTarget_pX3,Plot_pX3] = seperate_data(TestIdx,pX3,species);
+[TestDataSet_pX4,TestTarget_pX4,SampleDataSet_pX4,SampleTarget_pX4,Plot_pX4] = seperate_data(TestIdx,pX4,species);
+[TestDataSet_pX5,TestTarget_pX5,SampleDataSet_pX5,SampleTarget_pX5,Plot_pX5] = seperate_data(TestIdx,pX5,species);
+
+species(TestIdx) = [];
+Plot_Y = vertcat(species, repmat(cellstr('query point'),TestPoints,1));
 
 timestamp = datestr(now, 'dd-mm-yy_HH-MM-SS-FFF');
-%mkdir(['results/knn/',timestamp]);
-dir = ['results/knn/',timestamp];
+mkdir(['results/knn/',timestamp]);
+dir = ['results/knn/',timestamp,'/'];
+
+fileID = fopen(strcat(dir, 'knn_summary.txt'),'a');
+knn_result(SampleDataSet_X,TestDataSet_X,SampleTarget_X,TestTarget_X,0,n,d,0,error,fileID);
+knn_result(SampleDataSet_pX2,TestDataSet_pX2,SampleTarget_pX2,TestTarget_pX2,1,n,d,2,error,fileID);
+knn_result(SampleDataSet_pX3,TestDataSet_pX3,SampleTarget_pX3,TestTarget_pX3,1,n,d,3,error,fileID);
+knn_result(SampleDataSet_pX4,TestDataSet_pX4,SampleTarget_pX4,TestTarget_pX4,2,n,d,4,error,fileID);
+knn_result(SampleDataSet_pX5,TestDataSet_pX5,SampleTarget_pX5,TestTarget_pX5,3,n,d,5,error,fileID);
+fclose(fileID);
 
 figure()
 hold on
-gscatter(X(1,:),X(2,:),species,'rgbk','osdx',[6,6,6,10]);
+gscatter(Plot_X(1,:),Plot_X(2,:),Plot_Y,'rgbk','osdx',[6,6,6,10]);
 title('Original Plot')
 xlabel('Sepal length')
 ylabel('Sepal width')
 hold off
-%saveas(gca, strcat(dir, 'original.png'));
+saveas(gca, strcat(dir, 'original.png'));
 
 figure()
 hold on
-gscatter(pX2(1,:),pX2(2,:),species,'rgbk','osdx',[6,6,6,10]);
+gscatter(Plot_pX2(1,:),Plot_pX2(2,:),Plot_Y,'rgbk','osdx',[6,6,6,10]);
 title('FJLT 1 with k = 2')
 xlabel('x1')
 ylabel('x2')
 hold off
-%saveas(gca, strcat(dir, '_FJLT_1_k2.png'));
+saveas(gca, strcat(dir, '_FJLT_1_k2.png'));
 
 figure()
 hold on
-gscatter(pX3(1,:),pX3(2,:),species,'rgbk','osdx',[6,6,6,10]);
+gscatter(Plot_pX3(1,:),Plot_pX3(2,:),Plot_Y,'rgbk','osdx',[6,6,6,10]);
 title('FJLT 1 with k = 3')
 xlabel('x1')
 ylabel('x2')
 hold off
-%saveas(gca, strcat(dir, '_FJLT_1_k3.png'));
+saveas(gca, strcat(dir, '_FJLT_1_k3.png'));
 
 figure()
 hold on
-gscatter(pX4(1,:),pX4(2,:),species,'rgbk','osdx',[6,6,6,10]);
+gscatter(Plot_pX4(1,:),Plot_pX4(2,:),Plot_Y,'rgbk','osdx',[6,6,6,10]);
 title('FJLT 2 with k = 4')
 xlabel('x1')
 ylabel('x2')
 hold off
-%saveas(gca, strcat(dir, '_FJLT_2_k4.png'));
+saveas(gca, strcat(dir, '_FJLT_2_k4.png'));
 
 figure()
 hold on
-gscatter(pX5(1,:),pX5(2,:),species,'rgbk','osdx',[6,6,6,10]);
+gscatter(Plot_pX5(1,:),Plot_pX5(2,:),Plot_Y,'rgbk','osdx',[6,6,6,10]);
 title('FJLT 2 with k = 5')
 xlabel('x1')
 ylabel('x2')
 hold off
-%saveas(gca, strcat(dir, '_FJLT_2_k5.png'));
+saveas(gca, strcat(dir, '_FJLT_2_k5.png'));
 
 

@@ -1,6 +1,12 @@
-function testFJLT1(d)
-n = 10000; %d = 128; 
+function testFJLT1(n,d)
+% n = 500; %d = 128; 
 A = rand(d,n);
+    pX = zeros(d,n);
+    for i=1:d
+        x_min = min(A(i,:));
+        x_max = max(A(i,:));
+        pX(i,:) = (A(i,:) - x_min)/(x_max - x_min);
+    end
 k = [2,3,4,8,16,25,32];
 k_dim = length(k);
 prob = zeros(k_dim,50); averageCompTime = zeros(k_dim,50); maxCompTime = zeros(k_dim,50);
@@ -16,7 +22,7 @@ for i = 1:k_dim
         averageCompTime_1 = 0;
         averageMaxCompTime_1 = 0;
         for j = 1:1:20
-            [prob_2, bigO, averageCompTime_2, averageMaxCompTime_2, projMatrix, nonZeros] = fjlt1_inequality(n,k(i),d,e/50,A);
+            [prob_2, bigO, averageCompTime_2, averageMaxCompTime_2, projMatrix, nonZeros] = fjlt1_inequality(n,k(i),d,e/50,pX);
             prob_1 = prob_1 + prob_2;
             averageCompTime_1 = averageCompTime_1 + averageCompTime_2;
             averageMaxCompTime_1 = averageMaxCompTime_1 + averageMaxCompTime_2;

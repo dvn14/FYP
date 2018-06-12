@@ -10,10 +10,14 @@ rk = randperm(beta,k);
 B_k = normc(H_beta(rk,:));
 
 BD_kd = B_k*D_beta;
-HD_dd = H_beta*D_beta;
+P = [];
+for i = 1:x
+    HD_dd = H_beta*createRandomDiagonal(beta);
+    BDHD  = BD_kd*HD_dd;
+    P = horzcat(P,BDHD);
+end
 
-BDHD  = BD_kd*HD_dd;
-P = repmat(BDHD,1,x);
+%P = repmat(BDHD,1,x);
 % H = 2^(-d/2)*hadamard(d);
 % i = randperm(d,k);
 % A = sqrt(d/k)*H(i,:);

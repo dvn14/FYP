@@ -1,7 +1,15 @@
 function testFJLT2(n,d,k,beta)
 %clear;
 %n = 50; d = 64; %beta and e 
-A = normc(rand(d,n));
+X = rand(d,n);
+A = zeros(d,n);
+
+for i=1:d
+    x_min = min(X(i,:));
+    x_max = max(X(i,:));
+    A(i,:) = (X(i,:) - x_min)/(x_max - x_min);
+end
+
 %k = [2,3,4,5,8,16];
 k_dim = length(k);
 %beta = [4,16,16,24];

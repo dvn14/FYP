@@ -12,7 +12,7 @@ dir = 'results/knn/';
 
 figure()
 hold on
-gscatter(X(1,:),X(2,:),species,'rgb','osd',[6,6,6]);
+gscatter(meas(:,1),meas(:,2),species,'rgb','osd',[6,6,6]);
 title('Original Iris Data Set')
 xlabel('Sepal length')
 ylabel('Sepal width')
@@ -21,7 +21,7 @@ saveas(gca, strcat(dir, 'original_fisheriris_1.png'));
 
 figure()
 hold on
-gscatter(X(3,:),X(4,:),species,'rgb','osd',[6,6,6]);
+gscatter(meas(:,3),meas(:,4),species,'rgb','osd',[6,6,6]);
 title('Original Iris Data Set')
 xlabel('Petal length')
 ylabel('Petal width')

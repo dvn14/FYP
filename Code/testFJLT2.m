@@ -2,14 +2,14 @@ function testFJLT2(n,d,k,beta)
 %clear;
 %n = 50; d = 64; %beta and e 
 X = rand(d,n);
-A = zeros(d,n);
-
-for i=1:d
-    x_min = min(X(i,:));
-    x_max = max(X(i,:));
-    A(i,:) = (X(i,:) - x_min)/(x_max - x_min);
-end
-
+% A = zeros(d,n);
+% 
+% for i=1:d
+%     x_min = min(X(i,:));
+%     x_max = max(X(i,:));
+%     A(i,:) = (X(i,:) - x_min)/(x_max - x_min);
+% end
+A = normc(X);
 %k = [2,3,4,5,8,16];
 k_dim = length(k);
 %beta = [4,16,16,24];
@@ -37,7 +37,7 @@ for i = 1:k_dim
                 highestprob = prob_2;
                 highestProbAt(i) = e/100;
             end
-            if c == 50
+            if c == 10
                 break;
             end
             c = c+1;
@@ -58,7 +58,7 @@ timestamp = datestr(now, 'dd-mm-yy_HH-MM-SS-FFF');
     hold on
     xlabel('Error')
     ylabel('Probability of JLP')
-    title(['Plot when n = ', num2str(n), ', d = ', num2str(d), ', beta = ', num2str(beta)])
+    title(['Plot when n = ', num2str(n), ', d = ', num2str(d)])
     names = cell(1,k_dim);
 for i = 1:k_dim
     plot(e,smoothdata(probs(i,:)), 'Markersize', 8);
@@ -73,7 +73,7 @@ end
     hold on
     yyaxis left
     plot(k,smoothdata(highestProbAt), 'b-', 'Markersize', 8);
-    title(['Plot when n = ', num2str(n), ', d = ', num2str(d), ', beta = ', num2str(beta)])
+    title(['Plot when n = ', num2str(n), ', d = ', num2str(d)])
     xlabel('Embedded Dimension (k)')
     ylabel('Highest Probability at Error')
 

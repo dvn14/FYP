@@ -37,7 +37,7 @@ for i = 1:k_dim
                 highestprob = prob_2;
                 highestProbAt(i) = e/100;
             end
-            if c == 10
+            if c == 50
                 break;
             end
             c = c+1;

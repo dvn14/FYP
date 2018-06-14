@@ -44,7 +44,7 @@ figure()
 hold on
 plot(k,smoothdata(pos1),'b-',k,smoothdata(pos2),'g-','Markersize',8);
 legend({'FJLT 1','FJLT 2'},'Location','northeast')
-title(['Success when n = ', num2str(n), ', d = ', num2str(d), ' for error = ',num2str(error)])
+title(['Success when n = ', num2str(n), ', d = ', num2str(d)])
 xlabel('Reduced dimension (k)')
 ylabel('Probability of Success')
 hold off
@@ -54,7 +54,7 @@ figure()
 hold on
 plot(k,smoothdata(act1),'b-',k,smoothdata(act2),'g-','Markersize',8);
 legend({'FJLT 1','FJLT 2'},'Location','northeast')
-title(['Computation Time when n = ', num2str(n), ', d = ', num2str(d), ' for error = ',num2str(error)])
+title(['Computation Time when n = ', num2str(n), ', d = ', num2str(d)])
 xlabel('Reduced dimension (k)')
 ylabel('Computation Time')
 hold off

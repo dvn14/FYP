@@ -43,7 +43,7 @@ knn_result(SampleDataSet_X,TestDataSet_X,SampleTarget_X,TestTarget_X,0,n,d,0,err
 knn_result(SampleDataSet_pX2,TestDataSet_pX2,SampleTarget_pX2,TestTarget_pX2,1,n,d,2,error,fileID);
 knn_result(SampleDataSet_pX3,TestDataSet_pX3,SampleTarget_pX3,TestTarget_pX3,1,n,d,3,error,fileID);
 knn_result(SampleDataSet_pX4,TestDataSet_pX4,SampleTarget_pX4,TestTarget_pX4,2,n,d,4,error,fileID);
-knn_result(SampleDataSet_pX5,TestDataSet_pX5,SampleTarget_pX5,TestTarget_pX5,3,n,d,5,error,fileID);
+knn_result(SampleDataSet_pX5,TestDataSet_pX5,SampleTarget_pX5,TestTarget_pX5,2,n,d,5,error,fileID);
 fclose(fileID);
 
 figure()

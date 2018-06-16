@@ -11,8 +11,14 @@ end
 
 fjlt1error = zeros(1,9); 
 fjlt2error = zeros(1,9);
-
-X_CP = create_cp(species,indices,X);
+er = zeros(1,10)+1;
+for i = 1:10
+    X_CP = create_cp(species,indices,X);
+    if X_CP.ErrorRate < min(er)
+        OP = X_CP;
+    end
+    er(i) = X_CP.ErrorRate;
+end
 
 %[CP,average_error] = fjlt_cross_val(Type,k,beta,X,species,indices);
 [CP_1_2,fjlt1error(1)] = fjlt_cross_val(1,2,0,X,species,indices);
@@ -42,17 +48,17 @@ timestamp = datestr(now, 'dd-mm-yy_HH-MM-SS-FFF');
 
 figure()
 hold on
-plot(k,smoothdata(fjlt1error),'b-',k,smoothdata(fjlt2error),'g-','Markersize',8)
+plot(k,smoothdata(fjlt1error),'b-',k,smoothdata(fjlt2error),'g-',k,ones(1,length(k))*mean(er),'r--','Markersize',8)
 title('Cross Validation for Reduced Dimensions')
 xlabel('Reduced Dimension (k)')
 ylabel('Classification Error (%)')
-legend({'FJLT 1','FJLT 2'},'Location','northeast')
+legend({'FJLT 1','FJLT 2','Original'},'Location','northeast')
 hold off
 saveas(gca, strcat(dir, timestamp, 'cross_validation_error.png'))
 
-X_CP.ErrorRate
-X_CP.ClassLabels
-X_CP.CountingMatrix
+mean(er)
+OP.ClassLabels
+OP.CountingMatrix
 
 CP_1_2.ErrorRate
 CP_1_2.ClassLabels

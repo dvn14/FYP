@@ -1,6 +1,9 @@
 clear;
 load fisheriris;
 measT=meas';
+
+TestPoints = 5;
+
 n = 150;
 d=32;
 error = 0.45;
@@ -22,7 +25,6 @@ pX3 = norm_matrix(X,Phi_3,3,150);
 pX4 = norm_matrix(X,Phi_4,4,150);
 pX5 = norm_matrix(X,Phi_5,5,150);
 
-TestPoints = 5;
 TestIdx = randperm(150,TestPoints);
 
 [TestDataSet_X,TestTarget_X,SampleDataSet_X,SampleTarget_X,Plot_X] = seperate_data(TestIdx,X,species);

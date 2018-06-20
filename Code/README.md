@@ -1,5 +1,32 @@
 ## Code Files
 
+### Running Fast Johnson-Lindenstrauss Transform Projections
+
+File: run_fjlt.m
+
+Variable Parameters: sample size (n), reduced dimension (k, FJLT 1 only)
+
+### Running FJLT Comparison Tests
+
+File: run_comparison.m
+
+Variable Parameters: distortion error, original dimension, reduced dimension upper bound, sample size, beta value (FJLT 2 only)
+
+### Running K-Nearest Neighbours Tests
+
+File: run_knn_test.m
+
+Variable Parameters: number of test points (TestPoints)
+
+This test was used for analysing the classification
+
+File: run_knn_correctness.m
+
+Variable Parameters: number of test points (TestPoints)
+
+This test was used for cross-validation tests with a broad range of reduced dimensions
+
+
 ### createRandomDiagonal(d)
 
 The random diagonal matrix is created where its diagonal elements are +1 or -1 with probability 0.5.
